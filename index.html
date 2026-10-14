@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
 <title>Sargo Verify 2.0 — Verification Intelligence</title>
 <style>
 :root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--red:#f85149;--orange:#d29922;--purple:#bc8cff}
@@ -11,7 +12,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,san
 h1{font-size:1.45em;margin:0 0 4px}
 h2{font-size:1.0em;color:var(--accent);margin:30px 0 12px;text-transform:uppercase;letter-spacing:.07em}
 h2 .cnt{color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400}
-.sub{color:var(--muted);font-size:.88em;margin-bottom:18px}
+.sub{color:var(--muted);font-size:.88em;margin-bottom:12px}
+.synbanner{background:rgba(210,153,34,.12);border:1px solid var(--orange);border-radius:8px;padding:10px 14px;margin:0 0 18px;font-size:.85em;line-height:1.5}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
@@ -39,40 +41,51 @@ details .inner{padding:4px 14px 12px;font-size:.82em;color:var(--text);line-heig
 </head>
 <body>
 <h1>Sargo Verify 2.0 — Verification Intelligence</h1>
-<div class="sub">Every figure traceable to a committed evidence receipt · Blocks B1–B15 · HEAD <code>b12a382</code> · Synthetic lane (live-bank figures appended after G5) · 2026-10-14</div>
+<div class="sub">Every figure traceable to a committed evidence receipt · Blocks B1–B16 · HEAD <code>a157b8b</code> · static snapshot regenerated 2026-10-14 (after B16 closure) · synthetic lane (live-bank figures appended only after G5)</div>
+
+<div class="synbanner"><b>SYNTHETIC LANE — no production numbers on this dashboard.</b> Every figure below comes from hermetic synthetic-lane receipts: seeded fixtures, in-process EVM, injected clocks, zero live-bank access. This is a <b>static snapshot</b>, not a live monitor — no auto-refresh, no alerting hooks; regenerate after each block closure. Live-bank figures are appended only when G5 evidence exists.</div>
 
 <div class="kpis">
-<div class="kpi"><div class="v g">0</div><div class="l">Incorrect payouts (all gauntlets, all tiers)</div></div>
-<div class="kpi"><div class="v g">14</div><div class="l">Attack classes refused</div></div>
-<div class="kpi"><div class="v g">24+</div><div class="l">Real defects caught</div></div>
-<div class="kpi"><div class="v g">0</div><div class="l">Secret-scan findings</div></div>
-<div class="kpi"><div class="v a">1,000</div><div class="l">Orders/batch proven</div></div>
+<div class="kpi"><div class="v g">0</div><div class="l">Incorrect payouts — synthetic gauntlets, all tiers</div></div>
+<div class="kpi"><div class="v g">14</div><div class="l">Attack classes refused — hermetic test lanes</div></div>
+<div class="kpi"><div class="v g">10</div><div class="l">Defects caught — receipted (B11: 4 · B12: 6)</div></div>
+<div class="kpi"><div class="v g">0</div><div class="l">Secret-scan findings (receipted trees)</div></div>
+<div class="kpi"><div class="v a">1,000</div><div class="l">Orders/batch proven — synthetic fixture</div></div>
 <div class="kpi"><div class="v o">5</div><div class="l">Live gates remaining (G4–G8)</div></div>
 </div>
 
-<h2>Scale &amp; outcome analytics <span class="cnt">— FIX-B11-SCALE-V1</span></h2>
+<h2>Scale &amp; outcome analytics <span class="cnt">— FIX-B11-SCALE-V1 · B11_HARNESS_RESULT.json</span></h2>
 <div class="card"><canvas id="c1" height="330"></canvas>
-<div class="note"><b>Exact accounting at every tier:</b> admitted == Σ outcomes, unaccounted = 0, ledger digest deterministic. Tier-1's 100% COVERAGE_LIMIT is honest — the 900-row source was exhausted hunting one order; absence of evidence ≠ nonpayment, so the verdict refuses to guess.</div></div>
+<div class="note"><b>Exact accounting at every tier:</b> admitted == Σ outcomes, unaccounted = 0, ledger digest deterministic. Tier-1's 100% COVERAGE_LIMIT is honest — all 18 pages / 900 rows presented (880 unique identities; 20 duplicate page presentations) were exhausted hunting one order; absence of evidence ≠ nonpayment, so the verdict refuses to guess. Chart legend carries tier-1000 counts; exact values are tabulated in the refusal table below.</div></div>
 
 <h2>Match rate vs scale</h2>
 <div class="card"><canvas id="c2" height="230"></canvas>
-<div class="note">MATCHED share of admitted orders: 80% → 87% → 82.2% at scale. The non-matched tail is fully decomposed below — nothing silently dropped.</div></div>
+<div class="note">MATCHED share of admitted orders: 0% → 80% → 87% → 82.2% at scale. The non-matched tail is fully decomposed below — nothing silently dropped. (Charts render best ≥720px wide; every plotted value also appears as text on this page.)</div></div>
 
-<h2>Refusal analytics — why orders don't release</h2>
+<h2>Refusal analytics — why orders don't release <span class="cnt">— tier-1000 · B11_HARNESS_RESULT.json</span></h2>
 <div class="card">
 <div class="bar"><span class="lbl">MATCHED (release-eligible)</span><div class="track"><div class="fill" style="width:82.2%;background:var(--green)"></div></div><span class="num g">82.2%</span></div>
 <div class="bar"><span class="lbl">COVERAGE_LIMIT_REACHED</span><div class="track"><div class="fill" style="width:9.5%;background:var(--orange)"></div></div><span class="num o">9.5%</span></div>
 <div class="bar"><span class="lbl">ORDER_NOT_ELIGIBLE</span><div class="track"><div class="fill" style="width:3.6%;background:#8957e5"></div></div><span class="num">3.6%</span></div>
 <div class="bar"><span class="lbl">OUTSIDE_PAYMENT_WINDOW</span><div class="track"><div class="fill" style="width:3.4%;background:var(--red)"></div></div><span class="num r">3.4%</span></div>
-<div class="bar"><span class="lbl">AMBIGUOUS (human review, never auto)</span><div class="track"><div class="fill" style="width:1.3%;background:var(--purple)"></div></div><span class="num p">1.3%</span></div>
-<div class="note"><b>Every refusal is a bounded, actionable verdict</b> — never a silent drop: COVERAGE_LIMIT → widen source; NOT_ELIGIBLE → order state; OUTSIDE_WINDOW → check dates; AMBIGUOUS → review queue (A06: never auto-assign). This is the audit trail an operator needs to resolve any stuck payment.</div></div>
+<div class="bar"><span class="lbl">AMBIGUOUS (→ B16 hierarchy; residue: review, never auto)</span><div class="track"><div class="fill" style="width:1.3%;background:var(--purple)"></div></div><span class="num p">1.3%</span></div>
+<div class="note"><b>Every refusal is a bounded, actionable verdict</b> — never a silent drop: COVERAGE_LIMIT → widen source; NOT_ELIGIBLE → order state; OUTSIDE_WINDOW → check dates; AMBIGUOUS → run the B16 disambiguation hierarchy first (payment-reference rail → exact-amount uniquing → fail-closed refusal of residue; L0 55% → L2 0%, zero human arbitration — see next section); any residue → review queue (A06: never auto-assign). This is the audit trail an operator needs to resolve any stuck payment.</div></div>
 
-<h2>Anti-abuse: attack classes refused <span class="cnt">— 14 lanes, 100% refused, 0 accepted</span></h2>
+<h2>Disambiguation — zero human arbitration <span class="cnt">— B16 · FIX-B16-DISAMBIG-V1 · B16_HARNESS_RESULT.json</span></h2>
+<div class="card">
+<div class="bar"><span class="lbl">L0 baseline ambiguity</span><div class="track"><div class="fill" style="width:55%;background:var(--orange)"></div></div><span class="num o">55% (110/200)</span></div>
+<div class="bar"><span class="lbl">L1 reference-first matching</span><div class="track"><div class="fill" style="width:0.5%;background:var(--green)"></div></div><span class="num g">0%</span></div>
+<div class="bar"><span class="lbl">L1U exact-amount uniquing</span><div class="track"><div class="fill" style="width:0.5%;background:var(--green)"></div></div><span class="num g">0%</span></div>
+<div class="bar"><span class="lbl">L2 full stack</span><div class="track"><div class="fill" style="width:0.5%;background:var(--green)"></div></div><span class="num g">0%</span></div>
+<div class="bar"><span class="lbl">Human arbitration events (L2)</span><div class="track"><div class="fill" style="width:0%;background:var(--red)"></div></div><span class="num g">0 (from 110 at L0)</span></div>
+<div class="note">200 orders / 250 rows · collision mix: 60 twin-soup · 30 double-send · 20 decoy · 90 clean · incorrect releases 0 at every layer · kill gates A–D all hold · double-run byte-identical (sha256 bf329dc3…b0b33). Ambiguity is under-specified evidence, not a guessing problem: the hierarchy resolves it deterministically and never auto-tie-breaks (founding spec bars preference-based resolution; any residue fails closed).</div></div>
+
+<h2>Anti-abuse: attack classes refused <span class="cnt">— 14 tested lanes, 100% refused, 0 accepted within those lanes</span></h2>
 <div class="card">
 <table>
 <tr><th>#</th><th>Attack</th><th>Refusal mechanism</th><th>Evidence</th></tr>
 <tr><td>1</td><td>Forged signature (non-signer)</td><td>E_UNKNOWN_SIGNER</td><td>B12 test</td></tr>
-<tr><td>2</td><td>Tampered certificate field</td><td>digest ≠ signature</td><td>B12 test</td></tr>
+<tr><td>2</td><td>Tampered certificate field</td><td>digest mismatch → E_UNKNOWN_SIGNER</td><td>B12 test</td></tr>
 <tr><td>3</td><td>Retired signer</td><td>signer registry</td><td>B12 test</td></tr>
 <tr><td>4</td><td>Stale verifier epoch</td><td>E_SIGNER_EPOCH_STALE (exact-epoch)</td><td>B12 test</td></tr>
 <tr><td>5</td><td>Wrong order terms/account/fiat/currency/counterparty</td><td>immutable enrolled economics</td><td>B12 test</td></tr>
@@ -86,7 +99,7 @@ details .inner{padding:4px 14px 12px;font-size:.82em;color:var(--text);line-heig
 <tr><td>13</td><td>Chain reorg</td><td>re-drive from snapshot, one final effect</td><td>B13 S5</td></tr>
 <tr><td>14</td><td>Date-only posting forgery</td><td>honest parse refusal (no invented timestamp)</td><td>B14 P5</td></tr>
 </table>
-<div class="note"><b>Zero-incorrect-payout invariant:</b> across every tier, fault scenario and attack lane, no illegitimate payment was ever released. Default is refusal — release requires 20+ independent checks passing simultaneously.</div></div>
+<div class="note"><b>Zero-incorrect-payout invariant (synthetic lanes):</b> across every tier, fault scenario and attack lane above, no illegitimate payment was ever released. Default is refusal — the contract defines <b>23 distinct refusal errors</b> (the E_* set in SargoEvidenceReleaseV1.sol) and release requires clearing every applicable guard; any single failure refuses.<br><b>Scope honesty:</b> these 14 lanes are hermetic in-process EVM tests with synthetic keys — a <i>tested-class enumeration, not a security audit or proof of exhaustive coverage</i>. "0 accepted" means: within these 14 tested lanes, zero forged/tampered certificates released. Independent external review is gate G6 (BLOCKED). Live-chain attack surface (mempool, key custody, real reorg depth) is untested until G7+.</div></div>
 
 <h2>Audit trail — traceability chain</h2>
 <div class="card">
@@ -94,47 +107,50 @@ details .inner{padding:4px 14px 12px;font-size:.82em;color:var(--text);line-heig
 <div class="bar"><span class="lbl">Attestation → certificate digest</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">bound</span></div>
 <div class="bar"><span class="lbl">Certificate → chain event + nullifier</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">bound</span></div>
 <div class="bar"><span class="lbl">Chain ↔ ledger reconciliation</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">equal</span></div>
-<div class="note">B14 I1 invariant: every released order traces to exactly one attestation → one certificate → one nullifier → one chain event, all digests cross-equal. Any operator can re-derive the whole chain from the receipts.</div></div>
+<div class="note">B14 I1 invariant: every released order traces to exactly one attestation → one certificate → one nullifier → one chain event, all digests cross-equal. Any operator can re-derive the whole chain from the receipts (paths in the lineage card at the bottom).</div></div>
 
-<h2>Defects caught by the gauntlets <span class="cnt">— the system debugging itself</span></h2>
+<h2>Defect ledger <span class="cnt">— receipted counts first; narrative entries labelled as such</span></h2>
 <div class="card">
-<details><summary>B11 scale build (4 caught)</summary><div class="inner">
+<details><summary>B11 scale build (4 caught — receipted: B11_SCALE_RECEIPT.json)</summary><div class="inner">
 • Placeholder account commitment → every conjunction failed (MATCHED=0) — replaced with real witness commitment<br>
 • Incomplete source initially yielded NO_MATCH — reclassified COVERAGE_LIMIT_REACHED (absence ≠ nonpayment)<br>
 • Kill/resume crash-lane reclassification divergence vs baseline — moved to report time<br>
 • Tier-1 fairness assertion meaningless for single order — scoped correctly
 </div></details>
-<details><summary>B12 contract build (3 caught)</summary><div class="inner">
+<details><summary>B12 contract build (6 caught — receipted: B12 TASK_CONTRACT defects list)</summary><div class="inner">
 • Signer-epoch check used &lt; instead of != — old-epoch certs stayed valid after rotation; fixed to exact-epoch<br>
 • EIP-712 digest mismatch: "\x19\x01" prefix double-escaped to 8 literal chars — root-caused; frozen vectors now reproduce on-chain<br>
-• Stack-too-deep on 19-field struct hash — solved with two-half canonical encoding (byte-identical)
+• Stack-too-deep on 19-field struct hash — solved with two-half canonical encoding (byte-identical)<br>
+• Assembly struct hash: static memory arrays carry no length prefix (off-by-one word)<br>
+• keccak256(bytes) hashes the length prefix — replaced with raw-pointer keccak over payload only<br>
+• checkRelease custom-error catch: wrong selector shift — stable reason strings + raw-hex fallback
 </div></details>
-<details><summary>B14 gauntlet (4 caught)</summary><div class="inner">
+<details><summary>B14 gauntlet (4 engineering notes — narrative, NOT receipted in B14 artifacts)</summary><div class="inner">
 • Payment-window ambiguity: wide window let a twin row (same amount/day) collide with P1 → per-claim windows<br>
 • batch_consent_digest grammar violation (raw ref vs sha256 hex)<br>
 • EDR clock monotonicity violation on rebased fixtures<br>
 • Tamper-slot reuse masked the real E_FIAT_MISMATCH refusal lane
 </div></details>
-<details><summary>B13 + earlier blocks (13 more)</summary><div class="inner">
-• Relayer: BASE clock constant broke determinism — anchored to deploy block; TTL misalignment; BigInt JSON crash; ledger/event comparison shape<br>
+<details><summary>B13 + earlier blocks (13 engineering notes — partially receipted)</summary><div class="inner">
+• Receipted: B3/B4/B5 carryovers CO-2/CO-4 (B4_CARRYOVER_REGISTER.json); insertion-order-independent ledger digest (B11 KG6)<br>
+• Narrative (unreceipted, see git history per block): Relayer BASE clock constant broke determinism — anchored to deploy block; TTL misalignment; BigInt JSON crash; ledger/event comparison shape<br>
 • B10: posting-date timezone suffix; opening-balance anchor; INTEGER_MINOR_REGEX boundary<br>
-• B8: row-order conflict, insertion-order-dependent ledger digest, scanner alias blind spot<br>
-• Plus B3/B4/B5 carryovers (CO-2/CO-4 lease fencing) — see git log 2fffd4d..b12a382
+• B8: row-order conflict, scanner alias blind spot — see git log 2fffd4d..b12a382
 </div></details>
-<div class="note">Every defect has a regression test locking it shut. This is the difference between "tests pass" and "the gauntlet hunts."</div></div>
+<div class="note">Receipted defect counts: B11 = 4, B12 = 6 (10 total; these drive the KPI above). Each receipted defect carries a regression test per its block contract. Narrative entries are engineering memory from build transcripts — useful, but not zero-fabrication figures, which is why they are excluded from the KPI and labelled here.</div></div>
 
-<h2>Relayer fault tolerance <span class="cnt">— 5/5 survived, zero duplicate financial effect</span></h2>
+<h2>Relayer fault tolerance <span class="cnt">— 5/5 survived, zero duplicate financial effect · B13_HARNESS_RESULT.json</span></h2>
 <div class="card">
 <table><tr><th>Scenario</th><th>Fault</th><th>Outcome</th></tr>
 <tr><td>S1 HAPPY</td><td>—</td><td><span class="tag pass">RELEASED</span></td></tr>
 <tr><td>S2 DROP</td><td>tx dropped, resubmitted after deadline</td><td><span class="tag pass">RELEASED · 2 attempts</span></td></tr>
 <tr><td>S3 UNKNOWN</td><td>receipt hidden — learn from chain event only</td><td><span class="tag pass">RELEASED · 0 blind resubmits</span></td></tr>
-<tr><td>S4 REPLACEMENT</td><td>gas-bumped same nonce; duplicate refused</td><td><span class="tag pass">RELEASED · nullifier guard</span></td></tr>
+<tr><td>S4 REPLACEMENT</td><td>gas-bumped same nonce; duplicate refused</td><td><span class="tag pass">RELEASED · released-slot guard (E_ALREADY_RELEASED)</span></td></tr>
 <tr><td>S5 REORG</td><td>snapshot revert + re-drive</td><td><span class="tag pass">RELEASED · one final effect</span></td></tr>
 </table>
-<div class="note">Invariants: releasedCount 5 · ledger == chain events · every nullifier consumed ≤ 1× · zero blind resubmission.</div></div>
+<div class="note">Invariants (B13 receipt): releasedCount 5 · ledger == chain events · every nullifier consumed ≤ 1× · zero blind resubmission.</div></div>
 
-<h2>End-to-end gauntlet funnel (B14)</h2>
+<h2>End-to-end gauntlet funnel (B14) <span class="cnt">— B14_HARNESS_RESULT.json · sha256 a2bf9372…b028</span></h2>
 <div class="card">
 <div class="bar"><span class="lbl">Fixture rows captured</span><div class="track"><div class="fill" style="width:100%;background:var(--accent)"></div></div><span class="num">19</span></div>
 <div class="bar"><span class="lbl">Parsed to evidence records</span><div class="track"><div class="fill" style="width:89%;background:var(--accent)"></div></div><span class="num">17</span></div>
@@ -145,7 +161,7 @@ details .inner{padding:4px 14px 12px;font-size:.82em;color:var(--text);line-heig
 <div class="bar"><span class="lbl">Tampered certs accepted</span><div class="track"><div class="fill" style="width:0%;background:var(--red)"></div></div><span class="num g">0 ✓</span></div>
 </div>
 
-<h2>Gate status (G0–G8)</h2>
+<h2>Gate status (G0–G8) <span class="cnt">— WP11_TESTNET_DEPLOYMENT_MANIFEST.json gates_G0_G8</span></h2>
 <div class="card">
 <table>
 <tr><th>Gate</th><th>What it proves</th><th>Status</th></tr>
@@ -159,9 +175,9 @@ details .inner{padding:4px 14px 12px;font-size:.82em;color:var(--text);line-heig
 <tr><td>G7</td><td>Chain deployment + key ceremony</td><td><span class="tag blocked">BLOCKED · operator</span></td></tr>
 <tr><td>G8</td><td>Operating permission, caps, rollback</td><td><span class="tag blocked">BLOCKED · operator</span></td></tr>
 </table>
-<div class="note">Hermetic engineering 100% complete. Remaining gates need you (Equity session, keys) or external parties (review). After G5, this dashboard gains a live-bank section with real match rates.</div></div>
+<div class="note">Hermetic gates G0–G3 PASS (WP11 manifest). Remaining gates need you (Equity session, keys) or external parties (review) — they are live/external/operator gates, not engineering items. After G5, this dashboard gains a live-bank section with real match rates.</div></div>
 
-<h2>Regression suite (current HEAD)</h2>
+<h2>Regression suite <span class="cnt">— as last receipted (B15 closure · c806da2); not re-run at a157b8b</span></h2>
 <div class="card">
 <div class="bar"><span class="lbl">API verification suite</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">157/157</span></div>
 <div class="bar"><span class="lbl">Witness core suite</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">152/152</span></div>
@@ -170,9 +186,27 @@ details .inner{padding:4px 14px 12px;font-size:.82em;color:var(--text);line-heig
 <div class="bar"><span class="lbl">Relayer scenarios</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">5/5</span></div>
 <div class="bar"><span class="lbl">Governance validators + selftests</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">all green</span></div>
 <div class="bar"><span class="lbl">Secret-scan findings</span><div class="track"><div class="fill" style="width:0%;background:var(--red)"></div></div><span class="num g">0</span></div>
+<div class="note">Counts as last receipt-verified at B15 closure (c806da2). Contracts 18/18 independently re-verified 2026-10-14 (15 release-lane + 3 descriptor tests, hardhat in-process). Suite counts cover the scanned/receipted trees — not every file in the repo.</div></div>
+
+<h2>Data lineage &amp; incident drill-down</h2>
+<div class="card">
+<details open><summary>Every figure's receipt — where to look at 2am (click to collapse)</summary><div class="inner">
+<table>
+<tr><th>Dashboard section</th><th>Committed receipt (repo-relative)</th></tr>
+<tr><td>Scale/outcome/match-rate/refusal analytics</td><td>tracking/evidence-private/B11-SYNTHETIC-SCALE/B11_HARNESS_RESULT.json (result sha256 2883cda8…ffd8d)</td></tr>
+<tr><td>Disambiguation (B16)</td><td>tracking/evidence-private/B16-WP12-DISAMBIGUATION/B16_HARNESS_RESULT.json (sha256 bf329dc3…b0b33)</td></tr>
+<tr><td>Anti-abuse lanes 1–11</td><td>source/SargoZk-main/packages/contracts/test/SargoEvidenceReleaseV1.js (18/18 with descriptor file; re-run 2026-10-14)</td></tr>
+<tr><td>Anti-abuse lanes 12–13 · relayer table</td><td>tracking/evidence-private/B13-RELAYER-RECONCILIATION/B13_HARNESS_RESULT.json</td></tr>
+<tr><td>Anti-abuse lane 14 · funnel · audit trail</td><td>tracking/evidence-private/B14-INTEGRATED-GAUNTLET/B14_HARNESS_RESULT.json (invariants I1–I4)</td></tr>
+<tr><td>Gate status G0–G8</td><td>tracking/implementation/blocks/B15-WP11-ROLLOUT-PREP/WP11_TESTNET_DEPLOYMENT_MANIFEST.json</td></tr>
+<tr><td>Regression counts · secret-scan 0</td><td>tracking/implementation/blocks/B15-WP11-ROLLOUT-PREP/TASK_CONTRACT.json (verification line, c806da2)</td></tr>
+<tr><td>Defect ledger (receipted part)</td><td>B11_SCALE_RECEIPT.json (4) · B12 TASK_CONTRACT.json (6) · B4_CARRYOVER_REGISTER.json (CO-2/CO-4)</td></tr>
+</table>
+<b>Incident guidance:</b> this dashboard is a static snapshot — it cannot tell you the current state of a live system. For a verification incident: (1) identify the order's terminal verdict class above, (2) follow its operator action (widen source / check order state / check dates / run B16 hierarchy), (3) re-derive the audit chain from the receipts above — reproduce with tools/b11_scale_harness.py · tools/b13_relayer_harness.py · tools/b14_gauntlet_harness.py (all hermetic, safe to re-run any time). Alerting hooks and live incident states are post-G7 concerns and intentionally absent here.
+</div></details>
 </div>
 
-<div class="foot">Sargo Verify 2.0 — Verification Intelligence · Sources: B11_HARNESS_RESULT.json · B13_HARNESS_RESULT.json · B14_HARNESS_RESULT.json · B11_SCALE_RECEIPT (defects) · packages/contracts/test/SargoEvidenceReleaseV1.js (attack lanes) · WP11_TESTNET_DEPLOYMENT_MANIFEST.json · commit chain 2fffd4d→b12a382 · <b>Zero fabrication policy:</b> every number above is read from a committed receipt; nothing is projected or estimated. Live-bank rows will be added only when G5 evidence exists.</div>
+<div class="foot">Sargo Verify 2.0 — Verification Intelligence · Sources: B11_HARNESS_RESULT.json · B13_HARNESS_RESULT.json · B14_HARNESS_RESULT.json · B16_HARNESS_RESULT.json · B11_SCALE_RECEIPT.json + B12 TASK_CONTRACT.json (defects) · packages/contracts/test/SargoEvidenceReleaseV1.js (attack lanes) · WP11_TESTNET_DEPLOYMENT_MANIFEST.json · commit chain 2fffd4d→a157b8b · <b>Zero fabrication policy:</b> every number above is read from a committed receipt or labelled as narrative engineering memory; nothing is projected or estimated. Live-bank rows will be added only when G5 evidence exists.</div>
 
 <script>
 const T={bg:'#0d1117',grid:'#21262d',text:'#8b949e',acc:'#58a6ff',grn:'#3fb950',red:'#f85149',org:'#d29922',pur:'#bc8cff'};
@@ -211,11 +245,11 @@ tiers.forEach((t,i)=>{
  ctx.fillStyle='#e6edf3';ctx.fillText('n='+admitted[i],ml+i*bw+bw/2,H-mb+38);
 });
 let lx=ml;ctx.textAlign='left';
-series.forEach(s=>{ctx.fillStyle=s.c;ctx.fillRect(lx,10,10,10);ctx.fillStyle=T.text;ctx.fillText(s.n,lx+14,19);lx+=ctx.measureText(s.n).width+34;});
+series.forEach(s=>{const lab=s.n+'·'+s.v[3];ctx.fillStyle=s.c;ctx.fillRect(lx,10,10,10);ctx.fillStyle=T.text;ctx.fillText(lab,lx+14,19);lx+=ctx.measureText(lab).width+34;});
 })();
 
 (function(){
-const tiers=['t-1','t-10','t-100','t-1000'];
+const tiers=['tier-1','tier-10','tier-100','tier-1000'];
 const rate=[0,80,87,82.2];
 const H=230,ml=70,mr=20,mt=24,mb=40;
 const ctx=setup('c2',H);
