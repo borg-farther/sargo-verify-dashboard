@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sargo — Merchant Journey Wireframe</title>
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--panel:#1a1f29;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--red:#f85149;--orange:#d29922;--purple:#bc8cff;--equity:#d29922}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:24px;max-width:1240px;margin-inline:auto}
+h1{font-size:1.4em;margin:0 0 4px}
+h2{font-size:1.0em;color:var(--accent);margin:34px 0 14px;text-transform:uppercase;letter-spacing:.07em}
+.sub{color:var(--muted);font-size:.88em;margin-bottom:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;justify-content:center}
+.stepwrap{display:flex;flex-direction:column;align-items:center;max-width:310px}
+.clickbadge{background:var(--accent);color:#fff;border-radius:14px;font-size:.72em;font-weight:700;padding:3px 10px;margin:6px 0}
+.clickbadge.bank{background:var(--equity);color:#000}
+.clickbadge.auto{background:#21262d;color:var(--muted)}
+.arrow{color:var(--muted);font-size:1.4em;align-self:center;margin-top:260px}
+.phone{width:288px;background:#04050a;border:2px solid var(--border);border-radius:34px;padding:8px;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.screen{background:var(--bg);border-radius:26px;height:560px;display:flex;flex-direction:column;overflow:hidden}
+.statusbar{display:flex;justify-content:space-between;padding:10px 16px 4px;font-size:.68em;color:var(--muted)}
+.appbar{padding:10px 16px;border-bottom:1px solid var(--border);font-weight:700;font-size:.95em;display:flex;justify-content:space-between;align-items:center}
+.appbar .logo{color:var(--accent)}
+.content{flex:1;padding:14px;overflow:hidden;font-size:.8em}
+.content::-webkit-scrollbar{display:none}
+.cta{margin:10px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:.88em}
+.cta.primary{background:var(--accent);color:#fff}
+.cta.ghost{background:transparent;border:1px solid var(--border);color:var(--muted);font-weight:400;font-size:.75em;padding:9px}
+.rowitem{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.amt{font-weight:700}
+.dirbox{display:inline-block;font-size:.68em;padding:1px 7px;border-radius:8px;font-weight:700;margin-right:6px}
+.in{background:rgba(63,185,80,.15);color:var(--green)}
+.out{background:rgba(88,166,255,.13);color:var(--accent)}
+.note2{font-size:.72em;color:var(--muted);line-height:1.5}
+.big{font-size:1.7em;font-weight:800}
+.stat{display:flex;gap:10px;margin:10px 0}
+.statbox{flex:1;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center}
+.statbox .n{font-weight:800;font-size:1.15em}
+.statbox .t{font-size:.66em;color:var(--muted)}
+.securebar{background:#0e2233;border-bottom:1px solid #1f4460;padding:9px 12px;font-size:.72em;color:#7cc4ff;display:flex;align-items:center;gap:7px}
+.bankpage{background:#101418;height:100%;display:flex;flex-direction:column}
+.banklogo{text-align:center;font-weight:800;letter-spacing:.12em;color:#e8b64c;padding:16px 0 6px;font-size:.95em}
+.progressouter{background:#21262d;border-radius:6px;height:8px;overflow:hidden;margin:8px 0}
+.progressinner{height:100%;background:var(--accent);border-radius:6px}
+.otp{display:flex;gap:8px;justify-content:center;margin:12px 0}
+.otpcell{width:38px;height:46px;background:var(--panel);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2em;font-weight:700}
+.annotate{font-size:.7em;color:var(--muted);margin-top:8px;text-align:center;line-height:1.5;max-width:280px}
+.annotate b{color:var(--accent)}
+.callout{border-left:3px solid var(--green);background:rgba(63,185,80,.07);padding:8px 12px;border-radius:6px;font-size:.78em;margin:8px 0}
+.callout.warn{border-color:var(--orange);background:rgba(210,153,34,.07)}
+table{width:100%;border-collapse:collapse;font-size:.82em}
+td,th{padding:7px 9px;border-bottom:1px solid var(--border);text-align:left}
+th{color:var(--muted);font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.kpi .v{font-size:1.8em;font-weight:800;color:var(--green)}
+.kpi .l{color:var(--muted);font-size:.74em;margin-top:2px}
+.g{color:var(--green)}.o{color:var(--orange)}.a{color:var(--accent)}.r{color:var(--red)}
+.foot{color:var(--muted);font-size:.71em;border-top:1px solid var(--border);margin-top:30px;padding-top:12px;line-height:1.6}
+.pin{position:absolute;top:8px;right:10px;background:var(--red);color:#fff;font-size:.62em;font-weight:800;border-radius:8px;padding:2px 7px}
+.srel{position:relative}
+@media(max-width:700px){.arrow{display:none}}
+</style>
+</head>
+<body>
+<h1>Sargo Merchant Journey — Batch Proof of Payments</h1>
+<div class="sub">Sent + received in one bounded batch · wireframe v1 · product contract: one deliberate action, zero per-order clicking, same journey for 5 or 1,000 payments</div>
+
+<div class="kpis">
+<div class="kpi"><div class="v">2</div><div class="l">Sargo taps, total (first batch: Verify → Authorize)</div></div>
+<div class="kpi"><div class="v">1</div><div class="l">Sargo tap on every later batch</div></div>
+<div class="kpi"><div class="v">0</div><div class="l">Per-order clicks — never, at any scale</div></div>
+<div class="kpi"><div class="v">0</div><div class="l">Passwords seen by Sargo (bank page only)</div></div>
+</div>
+
+<h2>1 · The whole journey — screen by screen</h2>
+<div class="card">
+<div class="flow">
+
+<div class="stepwrap">
+<span class="clickbadge">TAP 1 — "Verify &amp; settle"</span>
+<div class="phone"><div class="screen srel">
+<div class="pin" style="background:var(--accent)">MERCHANT APP</div>
+<div class="statusbar"><span>9:41</span><span>▲ ● ■</span></div>
+<div class="appbar"><span>Payments</span><span class="logo">⌘ Sargo</span></div>
+<div class="content">
+<div class="rowitem" style="display:flex;justify-content:space-between;align-items:center">
+<div><div style="font-weight:700">Equity Bank</div><div class="note2">Business KES · •••• 4291</div></div>
+<div style="color:var(--muted)">▾</div>
+</div>
+<div class="stat">
+<div class="statbox"><div class="n g">3</div><div class="t">RECEIVED<br>KES 47,250</div></div>
+<div class="statbox"><div class="n a">2</div><div class="t">SENT<br>KES 12,100</div></div>
+</div>
+<div class="rowitem">
+<div style="display:flex;justify-content:space-between"><span class="dirbox in">IN</span><span class="amt">KES 18,500</span></div>
+<div class="note2">Order #8841 · window Oct 10–13</div>
+</div>
+<div class="rowitem">
+<div style="display:flex;justify-content:space-between"><span class="dirbox in">IN</span><span class="amt">KES 18,750</span></div>
+<div class="note2">Order #8842 · window Oct 10–13</div>
+</div>
+<div class="rowitem">
+<div style="display:flex;justify-content:space-between"><span class="dirbox in">IN</span><span class="amt">KES 10,000</span></div>
+<div class="note2">Order #8845 · window Oct 12–14</div>
+</div>
+<div class="rowitem" style="border-color:#4a3f2a">
+<div style="display:flex;justify-content:space-between"><span class="dirbox out">OUT</span><span class="amt">KES 12,100</span></div>
+<div class="note2">2 sent · refunds to escrow</div>
+</div>
+<div class="note2" style="margin-top:6px">⃠ 2 orders excluded — outside payment window <span style="color:var(--accent)">(why?)</span></div>
+</div>
+<div class="cta primary">Verify &amp; settle 5 payments</div>
+<div class="cta ghost">We'll release qualifying escrow. Your bank may ask you to sign in.</div>
+</div></div>
+<div class="annotate"><b>Screen 1 — Pending payments.</b> One screen, everything upfront: masked account, sent/received split with separate totals, excluded orders with reasons. Nothing preselected, nothing hidden.</div>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="stepwrap">
+<span class="clickbadge">TAP 2 — "Authorize" (first batch only)</span>
+<div class="phone"><div class="screen srel">
+<div class="pin" style="background:var(--purple)">CONSENT</div>
+<div class="statusbar"><span>9:41</span><span>▲ ● ■</span></div>
+<div class="appbar"><span>Authorize batch</span><span class="logo">⌘ Sargo</span></div>
+<div class="content">
+<div class="callout"><b>Batch #B-2210 · v1.2</b> — bounded and versioned. This consent covers exactly this batch, nothing more.</div>
+<div class="rowitem"><b>Sargo will read</b><div class="note2">Statement rows for •••• 4291 · Oct 1–14 · sent + received</div></div>
+<div class="rowitem"><b>Sargo will do</b><div class="note2">Match the 5 selected orders. Matching payments release their escrow. Nothing else moves.</div></div>
+<div class="rowitem"><b>Sargo will never</b><div class="note2">Store your bank password · move money · keep bank access after this batch</div></div>
+<div class="rowitem"><b>Session</b><div class="note2">Ends when the batch completes. Cancel any time — released funds can't be recalled, unreleased orders just stop.</div></div>
+</div>
+<div class="cta primary">Authorize batch</div>
+<div class="cta ghost">Cancel</div>
+</div></div>
+<div class="annotate"><b>Screen 2 — Bounded consent.</b> Plain-language disclosure: what's read, what happens, what never happens, how to stop. Later batches skip this screen — consent is versioned, and re-shown only when terms change. <b>That's every Sargo click done.</b></div>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="stepwrap">
+<span class="clickbadge bank">BANK · sign-in (bank-controlled)</span>
+<div class="phone"><div class="screen srel">
+<div class="pin" style="background:var(--equity);color:#000">BANK</div>
+<div class="securebar">🔒 <b>secure.equitybank.com</b> — verified by device · opened by Sargo</div>
+<div class="bankpage">
+<div class="banklogo">EQUITY BANK</div>
+<div style="text-align:center" class="note2">You are on Equity's own page.<br>Sargo cannot see what you type here.</div>
+<div class="content">
+<div class="rowitem"><div class="note2">Username</div><div style="border-bottom:1px solid var(--border);padding:6px 2px;color:var(--muted)">merchant_ke</div></div>
+<div class="rowitem"><div class="note2">Password</div><div style="border-bottom:1px solid var(--border);padding:6px 2px;color:var(--muted)">••••••••••</div></div>
+</div>
+<div class="cta primary" style="background:#e8b64c;color:#000">Sign in</div>
+<div class="note2" style="text-align:center;padding-bottom:10px">→ then OTP to your phone (Equity MFA)</div>
+</div></div>
+</div></div>
+<div class="annotate"><b>Screen 3 — Bank sign-in.</b> Opens in trusted native chrome with the <b>verified hostname always visible</b> — the anti-phishing anchor. Only allowlisted Equity pages; Sargo never draws a password field, never auto-fills, never automates MFA.</div>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="stepwrap">
+<span class="clickbadge bank">BANK · OTP</span>
+<div class="phone"><div class="screen srel">
+<div class="pin" style="background:var(--equity);color:#000">BANK</div>
+<div class="securebar">🔒 <b>secure.equitybank.com</b> — verified</div>
+<div class="bankpage">
+<div class="banklogo">EQUITY BANK</div>
+<div style="text-align:center" class="note2" style="padding-top:8px">Enter the code sent to<br>your phone ••• ••• 337</div>
+<div class="otp">
+<div class="otpcell">4</div><div class="otpcell">7</div><div class="otpcell">•</div><div class="otpcell">•</div><div class="otpcell">•</div><div class="otpcell">•</div>
+</div>
+<div class="content">
+<div class="callout warn" style="margin-top:4px">Statement access is read-only. Equity shows its own permission page — approve it there.</div>
+</div>
+<div class="cta primary" style="background:#e8b64c;color:#000">Verify</div>
+</div></div>
+</div></div>
+<div class="annotate"><b>Screen 4 — MFA + bank permission.</b> All bank-controlled steps: login, OTP, Equity's own statement-permission approval. Sargo adds zero screens here and reads nothing until the bank itself grants the session.</div>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="stepwrap">
+<span class="clickbadge auto">NO CLICKS — automatic</span>
+<div class="phone"><div class="screen srel">
+<div class="pin" style="background:#21262d;color:var(--muted)">READING</div>
+<div class="statusbar"><span>9:44</span><span>▲ ● ■</span></div>
+<div class="appbar"><span>Reading records…</span><span class="logo">⌘ Sargo</span></div>
+<div class="content" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
+<div style="font-size:2.4em">📖</div>
+<div class="big" style="margin-top:8px">Keep this app open</div>
+<div class="note2" style="margin-top:6px">Reading payment records from<br>Equity •••• 4291</div>
+<div style="margin-top:22px;text-align:left">
+<div class="note2">Pages read <b style="color:var(--text)">6 / 18</b></div>
+<div class="progressouter"><div class="progressinner" style="width:33%"></div></div>
+<div class="note2">Rows seen <b style="color:var(--text)">214</b> · duplicates skipped 20</div>
+<div class="progressouter"><div class="progressinner" style="width:24%;background:var(--purple)"></div></div>
+<div class="note2">Matches so far <b style="color:var(--green)">2 of 5</b></div>
+<div class="progressouter"><div class="progressinner" style="width:40%;background:var(--green)"></div></div>
+</div>
+<div class="callout" style="margin-top:18px">Bank records may outnumber your orders — that's normal. Only your 5 bounded orders can match.</div>
+</div>
+<div class="cta ghost">✕ Stop reading (keeps everything matched so far)</div>
+</div></div>
+<div class="annotate"><b>Screen 5 — Collecting evidence.</b> Honest progress (pages/rows/matches — never a fake "80%"), safe to watch, one tap to stop. <b>Zero required interaction.</b> Device-local matching; nothing leaves the phone until the batch is complete.</div>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="stepwrap">
+<span class="clickbadge auto">DONE — close the app</span>
+<div class="phone"><div class="screen srel">
+<div class="pin" style="background:var(--green)">RESULTS</div>
+<div class="statusbar"><span>9:47</span><span>▲ ● ■</span></div>
+<div class="appbar"><span>Batch complete</span><span class="logo">⌘ Sargo</span></div>
+<div class="content">
+<div class="callout"><b>Evidence received — you can close the app.</b> Verification and settlement continue on the server.</div>
+<div class="stat">
+<div class="statbox"><div class="n g">4</div><div class="t">VERIFIED &amp;<br>RELEASED</div></div>
+<div class="statbox"><div class="n o">1</div><div class="t">NEEDS<br>REVIEW</div></div>
+</div>
+<div class="rowitem"><div style="display:flex;justify-content:space-between"><span class="dirbox in">IN</span><span class="amt g">KES 18,500</span></div><div class="note2">#8841 · escrow released · receipt ↗</div></div>
+<div class="rowitem"><div style="display:flex;justify-content:space-between"><span class="dirbox in">IN</span><span class="amt g">KES 18,750</span></div><div class="note2">#8842 · escrow released · receipt ↗</div></div>
+<div class="rowitem"><div style="display:flex;justify-content:space-between"><span class="dirbox in">IN</span><span class="amt g">KES 10,000</span></div><div class="note2">#8845 · escrow released · receipt ↗</div></div>
+<div class="rowitem" style="border-color:#4a3f2a"><div style="display:flex;justify-content:space-between"><span class="dirbox out">OUT</span><span class="amt o">2 refunded</span></div><div class="note2">escrow released · receipts ↗</div></div>
+<div class="rowitem" style="border-color:var(--orange)"><div style="display:flex;justify-content:space-between"><span>!</span><span class="amt o">KES 18,750</span></div><div class="note2">#8843 · two same-amount payments found → sent to human review (never auto-matched)</div></div>
+</div>
+<div class="cta ghost">View full audit trail ↗</div>
+</div></div>
+<div class="annotate"><b>Screen 6 — Honest results.</b> Every order gets an independent outcome: released (with receipt) or a <b>named reason</b> it didn't release. Ambiguity goes to humans, never auto-guessed. Full trace: order → attestation → certificate → chain event.</div>
+</div>
+
+</div>
+</div>
+
+<h2>2 · Click math — why this is the minimum</h2>
+<div class="card">
+<table>
+<tr><th>Step</th><th>Who controls it</th><th>Clicks</th><th>Skippable?</th></tr>
+<tr><td>Review pending payments</td><td>Merchant</td><td>0</td><td>— (one screen, pre-summarized)</td></tr>
+<tr><td>Verify &amp; settle</td><td>Merchant</td><td><b>1</b></td><td>Never — the single deliberate action</td></tr>
+<tr><td>Authorize batch</td><td>Merchant</td><td><b>1</b> (first batch only)</td><td>Re-shown only when consent version changes</td></tr>
+<tr><td>Bank login + OTP + bank permission</td><td>Bank</td><td>bank's own</td><td>No — by design; bank keeps MFA authority</td></tr>
+<tr><td>Evidence collection</td><td>Automatic</td><td>0</td><td>Optional Stop; resume not needed — batch is idempotent</td></tr>
+<tr><td>Results</td><td>Automatic</td><td>0</td><td>—</td></tr>
+</table>
+<div class="callout"><b>Total: 2 taps on the first batch, 1 tap thereafter.</b> A batch of 1,000 payments is the identical journey — the product contract forbids per-order selection, confirmation, or wallet signatures after the single authorization.</div>
+</div>
+
+<h2>3 · Banking part — the trust boundary in detail</h2>
+<div class="card">
+<table>
+<tr><th>Element</th><th>Design</th><th>Why (safety)</th></tr>
+<tr><td>Verified hostname bar</td><td>Trusted native chrome, outside bank content, always visible</td><td>Phishing anchor — merchant can always confirm they're on real Equity</td></tr>
+<tr><td>Password + OTP entry</td><td>Only on the bank's page; Sargo renders no bank-password fields ever</td><td>Credentials never transit Sargo code; no autofill; no MFA automation</td></tr>
+<tr><td>Navigation allowlist</td><td>Only reviewed Equity domains + approved MFA redirects open</td><td>No arbitrary URL/SSRF/redirect lanes</td></tr>
+<tr><td>Session lifetime</td><td>Bank session valid only inside this batch; dies at completion</td><td>No always-on bank access, no lingering cookies</td></tr>
+<tr><td>Statement permissions</td><td>Bank's own grant page approves read access</td><td>The bank — not Sargo — gates every read</td></tr>
+<tr><td>Post-batch</td><td>Session cleanup, no persisted credentials, encrypted evidence only</td><td>Nothing reusable is left on the device</td></tr>
+</table>
+<div class="note2">Anti-abuse visible to the merchant: ambiguous matches → human review, never auto-release; coarse-date rows → honest refusal, never an invented timestamp; every release carries a re-derivable audit receipt.</div>
+</div>
+
+<h2>4 · Best-experience principles baked in</h2>
+<div class="card">
+<table>
+<tr><th>Principle</th><th>In the flow</th></tr>
+<tr><td>Fewest possible clicks</td><td>2 taps first batch, 1 after; zero per-order interaction</td></tr>
+<tr><td>Same journey at any scale</td><td>5 or 1,000 orders — one authorize, one progress screen</td></tr>
+<tr><td>No surprises</td><td>Totals, directions, exclusions and reasons shown before authorizing</td></tr>
+<tr><td>Honest states only</td><td>Real progress counts; refusals named, never silent drops</td></tr>
+<tr><td>Merchant keeps control</td><td>Stop anytime; cancel fence before release; bank stays auth authority</td></tr>
+<tr><td>Full explainability</td><td>Every outcome links to its evidence receipt + chain trace</td></tr>
+</table>
+</div>
+
+<div class="foot">Sargo Verify 2.0 — Merchant Journey Wireframe v1 · aligned to build-spec "Screens and interactions" (one bounded action; no per-order selection/confirmation; batch of 1 and 1,000 identical journey; bank-controlled MFA) · companion dashboard: sargo-verify-performance · synthetic-lane product design; live-bank screens finalize at G5 qualification.</div>
+</body>
+</html>
