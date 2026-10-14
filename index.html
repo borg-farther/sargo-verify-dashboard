@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sargo Verify 2.0 — Verification Intelligence</title>
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--red:#f85149;--orange:#d29922;--purple:#bc8cff}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:20px;max-width:1160px;margin-inline:auto}
+h1{font-size:1.45em;margin:0 0 4px}
+h2{font-size:1.0em;color:var(--accent);margin:30px 0 12px;text-transform:uppercase;letter-spacing:.07em}
+h2 .cnt{color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400}
+.sub{color:var(--muted);font-size:.88em;margin-bottom:18px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.kpi .v{font-size:1.75em;font-weight:700}.kpi .l{color:var(--muted);font-size:.75em;margin-top:2px}
+.g{color:var(--green)}.r{color:var(--red)}.o{color:var(--orange)}.a{color:var(--accent)}.p{color:var(--purple)}
+canvas{width:100%;display:block}
+.bar{display:flex;align-items:center;margin:7px 0;font-size:.85em}
+.bar .lbl{width:250px;color:var(--muted)}
+.bar .track{flex:1;background:#21262d;border-radius:4px;height:17px}
+.bar .fill{height:100%;border-radius:4px}
+.bar .num{margin-left:8px;min-width:52px}
+table{width:100%;border-collapse:collapse;font-size:.82em}
+td,th{padding:7px 9px;border-bottom:1px solid var(--border);text-align:left}
+th{color:var(--muted);font-weight:600;font-size:.92em}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.74em;font-weight:600;white-space:nowrap}
+.tag.pass{background:rgba(63,185,80,.15);color:var(--green)}
+.tag.blocked{background:rgba(210,153,34,.15);color:var(--orange)}
+.note{color:var(--muted);font-size:.77em;margin-top:8px;line-height:1.5}
+.foot{color:var(--muted);font-size:.71em;border-top:1px solid var(--border);margin-top:30px;padding-top:12px;line-height:1.6}
+details{margin:8px 0;background:#1a1f29;border:1px solid var(--border);border-radius:6px}
+summary{cursor:pointer;padding:9px 12px;font-size:.86em;color:var(--accent)}
+details .inner{padding:4px 14px 12px;font-size:.82em;color:var(--text);line-height:1.65}
+@media(max-width:720px){.bar .lbl{width:130px;font-size:.9em}.bar{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<h1>Sargo Verify 2.0 — Verification Intelligence</h1>
+<div class="sub">Every figure traceable to a committed evidence receipt · Blocks B1–B15 · HEAD <code>b12a382</code> · Synthetic lane (live-bank figures appended after G5) · 2026-10-14</div>
+
+<div class="kpis">
+<div class="kpi"><div class="v g">0</div><div class="l">Incorrect payouts (all gauntlets, all tiers)</div></div>
+<div class="kpi"><div class="v g">14</div><div class="l">Attack classes refused</div></div>
+<div class="kpi"><div class="v g">24+</div><div class="l">Real defects caught</div></div>
+<div class="kpi"><div class="v g">0</div><div class="l">Secret-scan findings</div></div>
+<div class="kpi"><div class="v a">1,000</div><div class="l">Orders/batch proven</div></div>
+<div class="kpi"><div class="v o">5</div><div class="l">Live gates remaining (G4–G8)</div></div>
+</div>
+
+<h2>Scale &amp; outcome analytics <span class="cnt">— FIX-B11-SCALE-V1</span></h2>
+<div class="card"><canvas id="c1" height="330"></canvas>
+<div class="note"><b>Exact accounting at every tier:</b> admitted == Σ outcomes, unaccounted = 0, ledger digest deterministic. Tier-1's 100% COVERAGE_LIMIT is honest — the 900-row source was exhausted hunting one order; absence of evidence ≠ nonpayment, so the verdict refuses to guess.</div></div>
+
+<h2>Match rate vs scale</h2>
+<div class="card"><canvas id="c2" height="230"></canvas>
+<div class="note">MATCHED share of admitted orders: 80% → 87% → 82.2% at scale. The non-matched tail is fully decomposed below — nothing silently dropped.</div></div>
+
+<h2>Refusal analytics — why orders don't release</h2>
+<div class="card">
+<div class="bar"><span class="lbl">MATCHED (release-eligible)</span><div class="track"><div class="fill" style="width:82.2%;background:var(--green)"></div></div><span class="num g">82.2%</span></div>
+<div class="bar"><span class="lbl">COVERAGE_LIMIT_REACHED</span><div class="track"><div class="fill" style="width:9.5%;background:var(--orange)"></div></div><span class="num o">9.5%</span></div>
+<div class="bar"><span class="lbl">ORDER_NOT_ELIGIBLE</span><div class="track"><div class="fill" style="width:3.6%;background:#8957e5"></div></div><span class="num">3.6%</span></div>
+<div class="bar"><span class="lbl">OUTSIDE_PAYMENT_WINDOW</span><div class="track"><div class="fill" style="width:3.4%;background:var(--red)"></div></div><span class="num r">3.4%</span></div>
+<div class="bar"><span class="lbl">AMBIGUOUS (human review, never auto)</span><div class="track"><div class="fill" style="width:1.3%;background:var(--purple)"></div></div><span class="num p">1.3%</span></div>
+<div class="note"><b>Every refusal is a bounded, actionable verdict</b> — never a silent drop: COVERAGE_LIMIT → widen source; NOT_ELIGIBLE → order state; OUTSIDE_WINDOW → check dates; AMBIGUOUS → review queue (A06: never auto-assign). This is the audit trail an operator needs to resolve any stuck payment.</div></div>
+
+<h2>Anti-abuse: attack classes refused <span class="cnt">— 14 lanes, 100% refused, 0 accepted</span></h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>Attack</th><th>Refusal mechanism</th><th>Evidence</th></tr>
+<tr><td>1</td><td>Forged signature (non-signer)</td><td>E_UNKNOWN_SIGNER</td><td>B12 test</td></tr>
+<tr><td>2</td><td>Tampered certificate field</td><td>digest ≠ signature</td><td>B12 test</td></tr>
+<tr><td>3</td><td>Retired signer</td><td>signer registry</td><td>B12 test</td></tr>
+<tr><td>4</td><td>Stale verifier epoch</td><td>E_SIGNER_EPOCH_STALE (exact-epoch)</td><td>B12 test</td></tr>
+<tr><td>5</td><td>Wrong order terms/account/fiat/currency/counterparty</td><td>immutable enrolled economics</td><td>B12 test</td></tr>
+<tr><td>6</td><td>Unknown or closed order</td><td>E_UNKNOWN_ORDER / E_ORDER_CLOSED</td><td>B12 test</td></tr>
+<tr><td>7</td><td>Unregistered predicate/provider/policy</td><td>DEFAULT_DENY registries</td><td>B12 test</td></tr>
+<tr><td>8</td><td>Broken interval orderings</td><td>earliest ≤ latest ≤ observed</td><td>B12 test</td></tr>
+<tr><td>9</td><td>Stale observation / expired certificate</td><td>max-age + TTL + clock-skew bounds</td><td>B12 test</td></tr>
+<tr><td>10</td><td>Coarse-date certificate</td><td>E_INSUFFICIENT_TIMESTAMP_PRECISION</td><td>B12 test</td></tr>
+<tr><td>11</td><td>Nullifier replay (double release)</td><td>E_NULLIFIER_ALREADY_USED</td><td>B12+B13</td></tr>
+<tr><td>12</td><td>Tx drop / replace / unknown outcome</td><td>chain-event-only reconciliation</td><td>B13 S2–S4</td></tr>
+<tr><td>13</td><td>Chain reorg</td><td>re-drive from snapshot, one final effect</td><td>B13 S5</td></tr>
+<tr><td>14</td><td>Date-only posting forgery</td><td>honest parse refusal (no invented timestamp)</td><td>B14 P5</td></tr>
+</table>
+<div class="note"><b>Zero-incorrect-payout invariant:</b> across every tier, fault scenario and attack lane, no illegitimate payment was ever released. Default is refusal — release requires 20+ independent checks passing simultaneously.</div></div>
+
+<h2>Audit trail — traceability chain</h2>
+<div class="card">
+<div class="bar"><span class="lbl">Order → attestation digest</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">bound</span></div>
+<div class="bar"><span class="lbl">Attestation → certificate digest</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">bound</span></div>
+<div class="bar"><span class="lbl">Certificate → chain event + nullifier</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">bound</span></div>
+<div class="bar"><span class="lbl">Chain ↔ ledger reconciliation</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">equal</span></div>
+<div class="note">B14 I1 invariant: every released order traces to exactly one attestation → one certificate → one nullifier → one chain event, all digests cross-equal. Any operator can re-derive the whole chain from the receipts.</div></div>
+
+<h2>Defects caught by the gauntlets <span class="cnt">— the system debugging itself</span></h2>
+<div class="card">
+<details><summary>B11 scale build (4 caught)</summary><div class="inner">
+• Placeholder account commitment → every conjunction failed (MATCHED=0) — replaced with real witness commitment<br>
+• Incomplete source initially yielded NO_MATCH — reclassified COVERAGE_LIMIT_REACHED (absence ≠ nonpayment)<br>
+• Kill/resume crash-lane reclassification divergence vs baseline — moved to report time<br>
+• Tier-1 fairness assertion meaningless for single order — scoped correctly
+</div></details>
+<details><summary>B12 contract build (3 caught)</summary><div class="inner">
+• Signer-epoch check used &lt; instead of != — old-epoch certs stayed valid after rotation; fixed to exact-epoch<br>
+• EIP-712 digest mismatch: "\x19\x01" prefix double-escaped to 8 literal chars — root-caused; frozen vectors now reproduce on-chain<br>
+• Stack-too-deep on 19-field struct hash — solved with two-half canonical encoding (byte-identical)
+</div></details>
+<details><summary>B14 gauntlet (4 caught)</summary><div class="inner">
+• Payment-window ambiguity: wide window let a twin row (same amount/day) collide with P1 → per-claim windows<br>
+• batch_consent_digest grammar violation (raw ref vs sha256 hex)<br>
+• EDR clock monotonicity violation on rebased fixtures<br>
+• Tamper-slot reuse masked the real E_FIAT_MISMATCH refusal lane
+</div></details>
+<details><summary>B13 + earlier blocks (13 more)</summary><div class="inner">
+• Relayer: BASE clock constant broke determinism — anchored to deploy block; TTL misalignment; BigInt JSON crash; ledger/event comparison shape<br>
+• B10: posting-date timezone suffix; opening-balance anchor; INTEGER_MINOR_REGEX boundary<br>
+• B8: row-order conflict, insertion-order-dependent ledger digest, scanner alias blind spot<br>
+• Plus B3/B4/B5 carryovers (CO-2/CO-4 lease fencing) — see git log 2fffd4d..b12a382
+</div></details>
+<div class="note">Every defect has a regression test locking it shut. This is the difference between "tests pass" and "the gauntlet hunts."</div></div>
+
+<h2>Relayer fault tolerance <span class="cnt">— 5/5 survived, zero duplicate financial effect</span></h2>
+<div class="card">
+<table><tr><th>Scenario</th><th>Fault</th><th>Outcome</th></tr>
+<tr><td>S1 HAPPY</td><td>—</td><td><span class="tag pass">RELEASED</span></td></tr>
+<tr><td>S2 DROP</td><td>tx dropped, resubmitted after deadline</td><td><span class="tag pass">RELEASED · 2 attempts</span></td></tr>
+<tr><td>S3 UNKNOWN</td><td>receipt hidden — learn from chain event only</td><td><span class="tag pass">RELEASED · 0 blind resubmits</span></td></tr>
+<tr><td>S4 REPLACEMENT</td><td>gas-bumped same nonce; duplicate refused</td><td><span class="tag pass">RELEASED · nullifier guard</span></td></tr>
+<tr><td>S5 REORG</td><td>snapshot revert + re-drive</td><td><span class="tag pass">RELEASED · one final effect</span></td></tr>
+</table>
+<div class="note">Invariants: releasedCount 5 · ledger == chain events · every nullifier consumed ≤ 1× · zero blind resubmission.</div></div>
+
+<h2>End-to-end gauntlet funnel (B14)</h2>
+<div class="card">
+<div class="bar"><span class="lbl">Fixture rows captured</span><div class="track"><div class="fill" style="width:100%;background:var(--accent)"></div></div><span class="num">19</span></div>
+<div class="bar"><span class="lbl">Parsed to evidence records</span><div class="track"><div class="fill" style="width:89%;background:var(--accent)"></div></div><span class="num">17</span></div>
+<div class="bar"><span class="lbl">Date-only rows refused (honest)</span><div class="track"><div class="fill" style="width:11%;background:var(--orange)"></div></div><span class="num o">2</span></div>
+<div class="bar"><span class="lbl">Orders matched</span><div class="track"><div class="fill" style="width:80%;background:var(--accent)"></div></div><span class="num">4 / 5</span></div>
+<div class="bar"><span class="lbl">Attestations signed + verified</span><div class="track"><div class="fill" style="width:80%;background:var(--purple)"></div></div><span class="num">4</span></div>
+<div class="bar"><span class="lbl">Certificates released on-chain</span><div class="track"><div class="fill" style="width:80%;background:var(--green)"></div></div><span class="num g">4</span></div>
+<div class="bar"><span class="lbl">Tampered certs accepted</span><div class="track"><div class="fill" style="width:0%;background:var(--red)"></div></div><span class="num g">0 ✓</span></div>
+</div>
+
+<h2>Gate status (G0–G8)</h2>
+<div class="card">
+<table>
+<tr><th>Gate</th><th>What it proves</th><th>Status</th></tr>
+<tr><td>G0</td><td>Reproducible deterministic builds</td><td><span class="tag pass">PASS</span></td></tr>
+<tr><td>G1</td><td>Frozen protocol vectors (on-chain digest == WP02)</td><td><span class="tag pass">PASS</span></td></tr>
+<tr><td>G2</td><td>Fail-closed verification/ingress/callback</td><td><span class="tag pass">PASS</span></td></tr>
+<tr><td>G3</td><td>Durable batch core vs real dev database</td><td><span class="tag pass">PASS</span></td></tr>
+<tr><td>G4</td><td>Physical device qualification</td><td><span class="tag blocked">BLOCKED · live</span></td></tr>
+<tr><td>G5</td><td>5 authentic bank proofs (Equity session)</td><td><span class="tag blocked">BLOCKED · live</span></td></tr>
+<tr><td>G6</td><td>Independent external review</td><td><span class="tag blocked">BLOCKED · external</span></td></tr>
+<tr><td>G7</td><td>Chain deployment + key ceremony</td><td><span class="tag blocked">BLOCKED · operator</span></td></tr>
+<tr><td>G8</td><td>Operating permission, caps, rollback</td><td><span class="tag blocked">BLOCKED · operator</span></td></tr>
+</table>
+<div class="note">Hermetic engineering 100% complete. Remaining gates need you (Equity session, keys) or external parties (review). After G5, this dashboard gains a live-bank section with real match rates.</div></div>
+
+<h2>Regression suite (current HEAD)</h2>
+<div class="card">
+<div class="bar"><span class="lbl">API verification suite</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">157/157</span></div>
+<div class="bar"><span class="lbl">Witness core suite</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">152/152</span></div>
+<div class="bar"><span class="lbl">Attestation vectors</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">29/29</span></div>
+<div class="bar"><span class="lbl">Escrow release contract</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">18/18</span></div>
+<div class="bar"><span class="lbl">Relayer scenarios</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">5/5</span></div>
+<div class="bar"><span class="lbl">Governance validators + selftests</span><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div><span class="num g">all green</span></div>
+<div class="bar"><span class="lbl">Secret-scan findings</span><div class="track"><div class="fill" style="width:0%;background:var(--red)"></div></div><span class="num g">0</span></div>
+</div>
+
+<div class="foot">Sargo Verify 2.0 — Verification Intelligence · Sources: B11_HARNESS_RESULT.json · B13_HARNESS_RESULT.json · B14_HARNESS_RESULT.json · B11_SCALE_RECEIPT (defects) · packages/contracts/test/SargoEvidenceReleaseV1.js (attack lanes) · WP11_TESTNET_DEPLOYMENT_MANIFEST.json · commit chain 2fffd4d→b12a382 · <b>Zero fabrication policy:</b> every number above is read from a committed receipt; nothing is projected or estimated. Live-bank rows will be added only when G5 evidence exists.</div>
+
+<script>
+const T={bg:'#0d1117',grid:'#21262d',text:'#8b949e',acc:'#58a6ff',grn:'#3fb950',red:'#f85149',org:'#d29922',pur:'#bc8cff'};
+const W=1100;
+function setup(id,h){const c=document.getElementById(id);const dpr=window.devicePixelRatio||1;c.width=W*dpr;c.height=h*dpr;c.style.width='100%';c.style.height=h+'px';const x=c.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);return x;}
+
+(function(){
+const tiers=['tier-1','tier-10','tier-100','tier-1000'];
+const admitted=[1,10,100,1000];
+const series=[
+ {n:'MATCHED',c:T.grn,v:[0,8,87,822]},
+ {n:'COVERAGE_LIMIT',c:T.org,v:[1,1,4,95]},
+ {n:'NOT_ELIGIBLE',c:'#8957e5',v:[0,1,3,36]},
+ {n:'OUTSIDE_WINDOW',c:T.red,v:[0,0,3,34]},
+ {n:'AMBIGUOUS',c:T.pur,v:[0,0,3,13]}
+];
+const H=330,ml=90,mr=16,mt=34,mb=70,bw=(W-ml-mr)/tiers.length;
+const ctx=setup('c1',H);
+ctx.font='12px -apple-system,Helvetica,Arial';
+for(const p of [0,25,50,75,100]){
+ const y=mt+(H-mt-mb)*(1-p/100);
+ ctx.strokeStyle=T.grid;ctx.beginPath();ctx.moveTo(ml,y);ctx.lineTo(W-mr,y);ctx.stroke();
+ ctx.fillStyle=T.text;ctx.textAlign='right';ctx.fillText(p+'%',ml-8,y+4);
+}
+tiers.forEach((t,i)=>{
+ let acc=0;const x0=ml+i*bw+18,bwEff=bw-36;
+ series.forEach(s=>{
+  const frac=admitted[i]?s.v[i]/admitted[i]:0;
+  const y1=mt+(H-mt-mb)*(1-acc),y2=mt+(H-mt-mb)*(1-(acc+frac));
+  ctx.fillStyle=s.c;ctx.fillRect(x0,y2,bwEff,y1-y2);
+  if(frac>0.06&&y1-y2>13){ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='11px Helvetica';ctx.fillText(s.v[i],x0+bwEff/2,(y1+y2)/2+4);}
+  acc+=frac;
+ });
+ ctx.fillStyle=T.text;ctx.textAlign='center';ctx.font='12px -apple-system';
+ ctx.fillText(t,ml+i*bw+bw/2,H-mb+20);
+ ctx.fillStyle='#e6edf3';ctx.fillText('n='+admitted[i],ml+i*bw+bw/2,H-mb+38);
+});
+let lx=ml;ctx.textAlign='left';
+series.forEach(s=>{ctx.fillStyle=s.c;ctx.fillRect(lx,10,10,10);ctx.fillStyle=T.text;ctx.fillText(s.n,lx+14,19);lx+=ctx.measureText(s.n).width+34;});
+})();
+
+(function(){
+const tiers=['t-1','t-10','t-100','t-1000'];
+const rate=[0,80,87,82.2];
+const H=230,ml=70,mr=20,mt=24,mb=40;
+const ctx=setup('c2',H);
+ctx.font='12px -apple-system,Helvetica,Arial';
+for(const p of [0,25,50,75,100]){
+ const y=mt+(H-mt-mb)*(1-p/100);
+ ctx.strokeStyle=T.grid;ctx.beginPath();ctx.moveTo(ml,y);ctx.lineTo(W-mr,y);ctx.stroke();
+ ctx.fillStyle=T.text;ctx.textAlign='right';ctx.fillText(p+'%',ml-8,y+4);
+}
+const xs=i=>ml+(W-ml-mr)*(i/(tiers.length-1));
+const ys=v=>mt+(H-mt-mb)*(1-v/100);
+ctx.strokeStyle=T.acc;ctx.lineWidth=2.5;ctx.beginPath();
+rate.forEach((v,i)=>i?ctx.lineTo(xs(i),ys(v)):ctx.moveTo(xs(0),ys(v)));ctx.stroke();
+rate.forEach((v,i)=>{ctx.fillStyle=T.acc;ctx.beginPath();ctx.arc(xs(i),ys(v),4,0,7);ctx.fill();});
+tiers.forEach((t,i)=>{ctx.fillStyle=T.text;ctx.textAlign='center';ctx.fillText(t,xs(i),H-mb+20);});
+})();
+</script>
+</body>
+</html>
